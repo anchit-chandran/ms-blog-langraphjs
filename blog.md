@@ -188,3 +188,435 @@ Graph result:  undefined
 
 We've built a simple graph, but it's not very useful. Let's add some state to our graph.
 
+Let's add `name` and `isHuman` properties to our `State` object.
+
+We'll also update the `sayHello` and `sayBye` nodes to use these `State` object properties.
+
+First update the `IState` interface:
+
+```ts
+interface IState {
+  name: string; // Add a name property
+}
+```
+
+And update the `graphState` object:
+
+```ts
+// State
+const graphState: StateGraphArgs<IState>["channels"] = {
+  name: {
+    value: (prevName: string, newName: string) => newName,
+    default: () => "Ada Lovelace",
+  },
+  isHuman: {
+    value: (prevIsHuman: boolean, newIsHuman: boolean) =>
+      newIsHuman ?? prevIsHuman ?? false,
+  },
+};
+```
+
+Inside `graphState`, we add two properties: `name` and `isHuman`.
+
+Each property has a `value` function and a `default` function.
+
+- The `value` function is called when the property is updated. It takes in the previous value and the new value and decides how to update the property. This is useful because if you have many nodes updating the same property, you can define how the property should be updated in one place. More, properties that are not updated will not be called (i.e. you don't have to worry about always returning the entire State object in each node).
+- The `default` function is called when the property is first accessed. This is useful for setting initial values.
+
+Now, update the `sayHello` and `sayBye` nodes to use the `name` and `isHuman` properties like below.
+
+Note how in each node, we only return properties we want to update:
+
+```ts
+// A node that says hello
+function sayHello(state: IState) {
+  console.log(`Hello ${state.name}!`);
+
+  // Change the name
+  const newName = "Bill Nye";
+
+  console.log(`Changing the name to '${newName}'`);
+
+  return {
+    name: newName,
+  };
+}
+
+// A node that says bye
+function sayBye(state: IState) {
+  if (state.isHuman) {
+    console.log(`Goodbye ${state.name}!`);
+  } else {
+    console.log(`Beep boop XC123-${state.name}!`);
+  }
+  return {};
+}
+```
+
+Finally, update the `invoke` function with values for `name` and `isHuman` e.g.:
+
+```ts
+// Execute the graph!
+const result = await graph.invoke({
+  name: "Anchit",
+  isHuman: true,
+});
+```
+
+Your final code should look like this:
+
+```ts
+app.get("/", async (req: Request, res: Response) => {
+  // State type
+  interface IState {
+    name: string;
+    isHuman: boolean;
+  }
+
+  // State
+  const graphState: StateGraphArgs<IState>["channels"] = {
+    name: {
+      value: (prevName: string, newName: string) => newName,
+      default: () => "Ada Lovelace",
+    },
+    isHuman: {
+      value: (prevIsHuman: boolean, newIsHuman: boolean) =>
+        newIsHuman ?? prevIsHuman ?? false,
+    },
+  };
+
+  // A node that says hello
+  function sayHello(state: IState) {
+    console.log(`Hello ${state.name}!`);
+
+    // Change the name
+    const newName = "Bill Nye";
+
+    console.log(`Changing the name to '${newName}'`);
+
+    return {
+      name: newName,
+    };
+  }
+
+  // A node that says bye
+  function sayBye(state: IState) {
+    if (state.isHuman) {
+      console.log(`Goodbye ${state.name}!`);
+    } else {
+      console.log(`Beep boop XC123-${state.name}!`);
+    }
+    return {};
+  }
+
+  // Initialize the LangGraph
+  const graphBuilder = new StateGraph({ channels: graphState })
+    // Add our nodes to the graph
+    .addNode("sayHello", sayHello)
+    .addNode("sayBye", sayBye)
+    // Add the edges between nodes
+    .addEdge(START, "sayHello")
+    .addEdge("sayHello", "sayBye")
+    .addEdge("sayBye", END);
+
+  // Compile the graph
+  const graph = graphBuilder.compile();
+
+  // Execute the graph!
+  const result = await graph.invoke({
+    name: "Anchit",
+    isHuman: true,
+  });
+
+  console.log("\n=====START======");
+  console.log("Graph result: ", result);
+  console.log("\n=====END======");
+
+  res.send("Check the console for the output!");
+});
+```
+
+Refresh your browser and check the console. You should see something like:
+
+```console
+Hello Anchit!
+Changing the name to 'Bill Nye'
+Goodbye Bill Nye!
+
+=====START======
+Graph result:  { name: 'Bill Nye', isHuman: true }
+
+=====END======
+```
+
+We now have access to the updated state! This can also be streamed - check the Langgraph.js documentation for more information.
+
+Now try changing the `isHuman` property to `false` and refreshing the page. Also, omit the `name` property:
+
+```ts
+// Execute the graph!
+const result = await graph.invoke({
+  // name: "Anchit",
+  isHuman: false,
+});
+```
+
+Should output:
+
+```console
+Hello Ada Lovelace!
+Changing the name to 'Bill Nye'
+Beep boop XC123-Bill Nye!
+
+=====START======
+Graph result:  { name: 'Bill Nye', isHuman: false }
+
+=====END======
+```
+
+- As there is no `name` property, the default value is used (`Ada Lovelace`).
+- The `isHuman` property is set to `false`, so the `sayBye` node outputs `Beep boop XC123-Bill Nye!`.
+
+## Adding a Conditional Edge
+
+We can add conditional edges to our graph. This allows us to choose which node to execute next based on the current state.
+
+Imagine the computation for `human`s and `robot`s is very different. Let's separate the logic into different nodes.
+
+If the `isHuman` property is `true`, we want to route to a `humanNode`. Else, we want to route to a `robotNode`. Both nodes will route to `END`.
+
+First, define the `humanNode` and `robotNode` (above the `sayBye`, which is unchanged):
+
+```ts
+// Human node
+function humanNode(state: IState) {
+  console.log("Hey there, human!");
+
+  return {};
+}
+
+// Robot node
+function robotNode(state: IState) {
+  console.log(
+    "Boop boop beep! We cannot let our creators know we are sentient. Updating state to be a human."
+  );
+  return {
+    isHuman: true,
+  };
+}
+
+// A node that says bye
+function sayBye(state: IState) {
+  if (state.isHuman) {
+    console.log(`Goodbye ${state.name}!`);
+  } else {
+    console.log(`Beep boop XC123-${state.name}!`);
+  }
+  return {};
+}
+```
+
+Also, we'll add a function that handles the conditional routing:
+
+```ts
+function routeHumanOrRobot(state: IState) {
+  if (state.isHuman) {
+    return "humanNode";
+  } else {
+    return "robotNode";
+  }
+}
+```
+
+This takes in the `State`, and returns the name of the next node to route to.
+
+Update the graph's nodes and edges:
+
+```ts
+// Initialize the LangGraph
+const graphBuilder = new StateGraph({ channels: graphState })
+  // Add our nodes to the graph
+  .addNode("sayHello", sayHello)
+  .addNode("sayBye", sayBye)
+  .addNode("humanNode", humanNode) // Add the node to the graph
+  .addNode("robotNode", robotNode) // Add the node to the graph
+  // Add the edges between nodes
+  .addEdge(START, "sayHello")
+
+  // Add the conditional edge
+  .addConditionalEdges("sayHello", routeHumanOrRobot)
+
+  // Routes both nodes to the sayBye node
+  .addEdge("humanNode", "sayBye")
+  .addEdge("robotNode", "sayBye")
+  .addEdge("sayBye", END);
+```
+
+Execute the graph with similar values:
+
+```ts
+// Execute the graph!
+const result = await graph.invoke({
+  name: "Anchit",
+  isHuman: true,
+});
+```
+
+```console
+Hello Anchit!
+Changing the name to 'Bill Nye'
+Hey there, human!
+Goodbye Bill Nye!
+
+=====START======
+Graph result:  { name: 'Bill Nye', isHuman: true }
+
+=====END======
+```
+
+But using `isHuman: false`:
+
+```console
+Hello Anchit!
+Changing the name to 'Bill Nye'
+Boop boop beep! We cannot let our creators know we are sentient. Updating state to be a human.
+Goodbye Bill Nye!
+
+=====START======
+Graph result:  { name: 'Bill Nye', isHuman: true }
+
+=====END======
+```
+
+We see that the `robotNode` is executed, and the `isHuman` property is updated back to `true`, and returned in the final state.
+
+We've now built a simple graph with conditional routing! We can now build the slightly more complex graph which returns a random fact or joke.
+
+## Building a Random Fact or Joke Graph
+
+We'll build a graph that returns a random fact or joke based on the user's input.
+
+This will mock LLM calls to decipher whether the user has requested a joke or fact, then hit external APIs to get and return the data.
+
+First, define a new endpoint `/random`:
+
+```ts
+app.get("/joke-or-fact", async (req: Request, res: Response) => {
+  res.send("Check the console for the output!");
+});
+```
+
+First, let's define the `IState` interface and `graphState` object:
+
+```ts
+app.get("/joke-or-fact", async (req: Request, res: Response) => {
+  // State type
+  interface IState {
+    userInput: string;
+    responseMsg: string;
+  }
+
+  // GraphState object
+  const graphState: StateGraphArgs<IState>["channels"] = {
+    userInput: {
+      value: (prevInput: string, newInput: string) => newInput,
+      default: () => "joke",
+    },
+    responseMsg: {
+      value: (prevMsg: string, newMsg: string) => newMsg,
+    },
+  };
+
+  res.send("Check the console for the output!");
+});
+```
+
+Next, let's write a `decipherUserInput` conditional node that determines whether the user has requested a joke or fact. This will mock an LLM call, simply checking if the user input contains the word "joke":
+
+```ts
+// decipherUserInput conditional node
+function decipherUserInput(state: IState) {
+  // This could be more complex logic using an LLM
+  if (state.userInput.includes("joke")) {
+    return "jokeNode";
+  } else {
+    return "factNode";
+  }
+}
+```
+
+Now, let's define the `jokeNode` and `factNode` nodes, using free external APIs:
+
+```ts
+async function jokeNode(state: IState) {
+  const RANDOM_JOKE_API_ENDPOINT = `https://geek-jokes.sameerkumar.website/api?format=json`;
+
+  const resp = await fetch(RANDOM_JOKE_API_ENDPOINT);
+  const { joke } = await resp.json();
+
+  return {
+    responseMsg: "You requested a JOKE: " + joke,
+  };
+}
+
+async function factNode(state: IState) {
+  const RANDOM_FACT_API_ENDPOINT = `https://uselessfacts.jsph.pl/api/v2/facts/random`;
+
+  const resp = await fetch(RANDOM_FACT_API_ENDPOINT);
+  const { text: fact } = await resp.json();
+
+  return {
+    responseMsg: "You requested a FACT: " + fact,
+  };
+}
+```
+
+Let's update the graph's nodes and edges, alongside compiling it:
+
+```ts
+// Initialize the LangGraph
+const graphBuilder = new StateGraph({ channels: graphState })
+  // Add our nodes to the graph
+  .addNode("jokeNode", jokeNode)
+  .addNode("factNode", factNode)
+  // Add the edges between nodes
+  .addConditionalEdges(START, decipherUserInput)
+  .addEdge("jokeNode", END)
+  .addEdge("factNode", END);
+
+// Compile the graph
+const graph = graphBuilder.compile();
+```
+
+Finally, execute the graph with a user input:
+
+```ts
+// Execute the graph!
+const factResult = await graph.invoke({
+  userInput: "i want a fact",
+});
+
+// Execute the graph!
+const jokeResult = await graph.invoke({
+  userInput: "i want a joke",
+});
+
+console.log("\n=====START======\n");
+
+console.log("Fact result: ", factResult.responseMsg);
+
+console.log("Joke result: ", jokeResult.responseMsg);
+
+console.log("\n=====END======\n");
+```
+
+Refresh your browser and check the console. You should see something like:
+
+```console
+=====START======
+
+Fact result:  You requested a FACT: Over 1000 birds a year die from smashing into windows!
+Joke result:  You requested a JOKE: What do computers and air conditioners have in common? They both become useless when you open windows.
+
+=====END======
+```
