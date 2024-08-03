@@ -4,7 +4,8 @@
   "description": "A Starter Repo For Learning Langraph.js",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "tsc && node index.js",
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",
