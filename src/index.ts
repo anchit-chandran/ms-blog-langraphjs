@@ -21,25 +21,33 @@ app.get("/", async (req: Request, res: Response) => {
     return {};
   }
 
+  // A node that says bye
+  function sayBye(state: IState) {
+    console.log(`From the 'sayBye' node: Bye world!`);
+    return {};
+  }
+
   // Initialize the LangGraph
   const graphBuilder = new StateGraph({ channels: graphState })
-    // Add our 'sayHello' node to the graph
+    // Add our nodes to the graph
     .addNode("sayHello", sayHello)
+    .addNode("sayBye", sayBye)
     // Add the edges to the graph
     .addEdge(START, "sayHello")
+    .addEdge("sayHello", "sayBye")
     .addEdge("sayHello", END);
 
   // Compile the graph
   const graph = graphBuilder.compile();
 
   // Execute the graph!
-  const result = await graph.invoke("sayHello");
+  const result = await graph.invoke({});
 
-  console.log('\n=====START======')
+  console.log("\n=====START======");
   console.log("Graph result: ", result);
-  console.log('\n=====END======')
+  console.log("\n=====END======");
 
-  res.send("Hello, TypeScript + Node.js + Express!");
+  res.send("Check the console for the output!");
 });
 
 // Start the server and listen on the specified port

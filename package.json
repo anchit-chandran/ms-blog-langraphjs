@@ -2,9 +2,9 @@
   "name": "ms-blog-langraphjs",
   "version": "1.0.0",
   "description": "A Starter Repo For Learning Langraph.js",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "scripts": {
-    "start": "nodemon --delay 1.5 --watch src --exec 'tsc && node' index.js",
+    "start": "nodemon --delay 1.5 --watch src --ext ts --exec 'tsc && node' src/index.js",
     "build": "tsc"
   },
   "author": "",
