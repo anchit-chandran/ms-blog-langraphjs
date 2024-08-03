@@ -4,7 +4,7 @@ Welcome to this complete beginner's guide to LangGraph.js, a powerful library in
 
 ## Who is this guide for?
 
-This guide is designed for beginners new to LangGraph.js who want to build applications powered by Large Language Models (LLMs). I began using LangGraph.js as part of my MSc Computer Science IXN Final Project at UCL. During my journey, I noticed a need for more beginner-friendly resources, especially for the TypeScript implementation, and found that the official documentation was still in progress. Through this guide, I aim to bridge that gap and showcase the potential of LangGraph.js and Langchain for creating LLM-powered products.
+This guide is designed for beginners new to LangGraph.js who want to build applications powered by Large Language Models (LLMs). I began using LangGraph.js as part of my Microsoft MSc Computer Science IXN Final Project at UCL. During my journey, I noticed a need for more beginner-friendly resources, especially for the TypeScript implementation, and found that the official documentation was still in progress. Through this guide, I aim to bridge that gap and showcase the potential of LangGraph.js and Langchain for creating LLM-powered products.
 
 While prior experience with LangGraph.js is not required, familiarity with the Langchain ecosystem and some basic understanding of TypeScript will help you follow the code samples and concepts.
 
