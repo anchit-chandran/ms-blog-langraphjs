@@ -1,22 +1,11 @@
 {
   "compilerOptions": {
-    "target": "es2016",
+    "target": "ES6",
     "module": "commonjs",
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
-    "outDir": "./dist", // Set the output directory for compiled JavaScript files
-    "rootDir": "./src", // Set the root directory where the TypeScript files reside
-    "moduleResolution": "node", // Enable node-like module resolution
-    "resolveJsonModule": true, // Enable importing JSON modules
-    "sourceMap": true // Enable source map generation for debugging
+    "forceConsistentCasingInFileNames": true
   },
-  "include": [
-    "src/**/*" // Include all files within the src directory
-  ],
-  "exclude": [
-    "node_modules", // Exclude node_modules from TypeScript compilation
-    "dist" // Exclude the dist directory to avoid recompiling the compiled JS files
-  ]
+  "include": ["src/**/*"]
 }

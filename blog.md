@@ -71,7 +71,7 @@ import { StateGraph, START, END, StateGraphArgs } from "@langchain/langgraph";
 
 Now, there's a few components to set up - all required to compile a graph. We'll start quite barebones and incrementally build up.
 
-**State**
+### State
 
 We need to define our `State` object, along with its interface. At the top of our `app.get('/')` function add:
 
@@ -133,10 +133,10 @@ const graphBuilder = new StateGraph({ channels: graphState })
   // Add our nodes to the graph
   .addNode("sayHello", sayHello)
   .addNode("sayBye", sayBye)
-  // Add the edges to the graph
+  // Add the edges between nodes
   .addEdge(START, "sayHello")
   .addEdge("sayHello", "sayBye")
-  .addEdge("sayHello", END);
+  .addEdge("sayBye", END);
 ```
 
 1. We initialise a new `StateGraph`, with a single object `{channels: graphState}`, where `graphState` is what we defined first.
@@ -170,6 +170,21 @@ Add to the code:
 
 Refresh your browser and check the console. You should see:
 
-```ts
+```console
+From the 'sayHello' node: Hello world!
+From the 'sayBye' node: Bye world!
 
+=====START======
+Graph result:  undefined
+
+=====END======
 ```
+
+1. The `sayHello` node is executed. This logs `"From the 'sayHello' node: Hello world!"`.
+2. The `sayBye` node is executed. This logs `"From the 'sayBye' node: Bye world!"`.
+3. The graph completes, and the result is logged. In this case, it's `undefined`.
+
+## Hello World Graph with State
+
+We've built a simple graph, but it's not very useful. Let's add some state to our graph.
+

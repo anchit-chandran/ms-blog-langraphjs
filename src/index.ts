@@ -32,10 +32,10 @@ app.get("/", async (req: Request, res: Response) => {
     // Add our nodes to the graph
     .addNode("sayHello", sayHello)
     .addNode("sayBye", sayBye)
-    // Add the edges to the graph
+    // Add the edges between nodes
     .addEdge(START, "sayHello")
     .addEdge("sayHello", "sayBye")
-    .addEdge("sayHello", END);
+    .addEdge("sayBye", END);
 
   // Compile the graph
   const graph = graphBuilder.compile();
