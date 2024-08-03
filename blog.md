@@ -49,6 +49,10 @@ cd ms-blog-langraphjs
 npm install
 ```
 
+This is a basic Express.js starter repository. We will only be working in the `/src` directory.
+
+Open `src/index.ts`.
+
 ## Understanding the Basics
 
 ### What is a Graph?
