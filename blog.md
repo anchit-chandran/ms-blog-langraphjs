@@ -16,7 +16,7 @@ You will not need any API keys. We'll be using mock LLM calls and free external 
 
 By the end of this guide, you will:
 
-- Gain a solid foundation of what Langraph.js is and how it works.
+- Gain a solid foundation of Langraph.js basics and how it works.
 - Build confidence in leveraging the Langchain and Langraph ecosystem to develop LLM-powered applications.
 - Learn to independently create and manage graphs using Langraph.js.
 
@@ -632,3 +632,15 @@ In this guide, we've covered the basics of Langraph.js, building a simple graph 
 We've learned how to define nodes, edges, and state objects, as well as how to add conditional routing to our graph.
 
 Langraph.js is a powerful tool for building complex workflows and managing state in your applications. With an understanding of the basics, you can now dive deeper into more complex workflows, leveraging the Langchain.js toolkit, and build your own LLM-powered applications.
+
+## Next Steps
+
+There's a lot more beyond the basics such as:
+
+- Checkpoints
+- Threads
+- Streaming
+- Breakpoints
+- Migrations
+
+The best resource to understand Langraph.js better is the [official documentation](https://langchain-ai.github.io/langgraphjs/concepts/low_level/). Also check out [Building ToolLLM With LangGraph.js](https://www.youtube.com/watch?v=xbZzJjBm6t4&t=742s) for a more production-grade example!
