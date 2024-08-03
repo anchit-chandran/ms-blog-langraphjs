@@ -1,38 +1,40 @@
-# Getting Started with Langraph.js
+# Getting Started with LangGraph.js
 
-Welcome to this beginner's guide to Langgraph.js.
+Welcome to this comprehensive beginner's guide to LangGraph.js, where we dive into the basics of building applications with LangGraph.js, a powerful library in the Langchain ecosystem.
 
 ## Who is this guide for?
 
-I’m writing this guide because I’m currently building a project using Langraph.js: a multimodal generative AI application, as part of my UCL Computer Science MSC IXN Final Project. When I started, I found that there were no resources aimed at beginners (at least for the Typescript implementation), and the official documentation was still under development. I also began with no prior knowledge of Langchain. Through this guide, I aim to share how useful Langraph.js and Langchain can be for building LLM-powered products.
+This guide is designed for complete beginners who are new to LangGraph.js and want to build applications powered by Large Language Models (LLMs). I began using LangGraph.js as part of my MSc Computer Science IXN Final Project at UCL. During my journey, I noticed a lack of beginner-friendly resources, especially for the TypeScript implementation, and found that the official documentation was still in progress. Through this guide, I aim to bridge that gap and showcase the potential of LangGraph.js and Langchain for creating LLM-powered products.
 
-This tutorial is designed for **complete beginners** who have no prior knowledge of Langraph.js. It will be useful to have some familiarity with the Langchain ecosystem and building with Large Language Models (LLMs). A basic understanding of Typescript will help you follow along with the code samples.
+While prior experience with Langchain is not required, familiarity with the Langchain ecosystem and some basic understanding of TypeScript will help you follow the code samples and concepts.
 
 ## Will I need API Keys?
 
-You will not need any API keys. We'll be using mock LLM calls and free external APIs. This is to keep the tutorial accessible to everyone.
+No, you won't need any API keys for this guide. We'll use mock LLM calls and free external APIs to keep the tutorial accessible to everyone.
 
 ## Learning outcomes
 
 By the end of this guide, you will:
 
-- Gain a solid foundation of Langraph.js basics and how it works.
+- Gain a solid foundation in the basics of LangGraph.js and how it works.
 - Build confidence in leveraging the Langchain and Langraph ecosystem to develop LLM-powered applications.
-- Learn to independently create and manage graphs using Langraph.js.
+- Learn how to independently create and manage graphs using LangGraph.js.
 
-## Overview of Langraph.js
+## Overview of LangGraph.js
 
-Langraph.js is a JavaScript library designed to simplify the creation and manipulation of graphs, particularly for applications involving LLMs. It provides an intuitive way to model workflows as graphs composed of nodes and edges, making it easier to manage complex data flows and processes.
+LangGraph.js is a JavaScript library designed to simplify the creation and manipulation of complex LLM-based workflows - especially, agentic workflows. See the official [LangGraph for Agentic Applications](https://langchain-ai.github.io/langgraphjs/concepts/high_level/) for more details.
+
+It provides an intuitive way to model workflows as graphs composed of nodes and edges, making it easier to manage complex data flows and processes.
 
 Developers can focus on logic, rather than infrastructure.
 
-### Prerequisites
+## Prerequisites
 
 Before getting started, ensure you have the following tools installed:
 
 - Node.js and npm
 
-### Setting Up the Starter Repository
+## Setting Up the Starter Repository
 
 **Clone the Starter Repository**:
 
@@ -51,7 +53,7 @@ npm install
 
 ### What is a Graph?
 
-In the context of Langraph.js, a graph is a collection of nodes and edges.
+In the context of LangGraph.js, a graph is a collection of nodes and edges.
 
 There are 3 key concepts:
 
@@ -627,11 +629,11 @@ Joke result:  You requested a JOKE: What do computers and air conditioners have 
 
 ## Conclusion
 
-In this guide, we've covered the basics of Langraph.js, building a simple graph that returns a random fact or joke based on user input.
+In this guide, we've covered the basics of LangGraph.js, building a simple graph that returns a random fact or joke based on user input.
 
 We've learned how to define nodes, edges, and state objects, as well as how to add conditional routing to our graph.
 
-Langraph.js is a powerful tool for building complex workflows and managing state in your applications. With an understanding of the basics, you can now dive deeper into more complex workflows, leveraging the Langchain.js toolkit, and build your own LLM-powered applications.
+LangGraph.js is a powerful tool for building complex workflows and managing state in your applications. With an understanding of the basics, you can now dive deeper into more complex workflows, leveraging the Langchain.js toolkit, and build your own LLM-powered applications.
 
 ## Next Steps
 
@@ -643,4 +645,4 @@ There's a lot more beyond the basics such as:
 - Breakpoints
 - Migrations
 
-The best resource to understand Langraph.js better is the [official documentation](https://langchain-ai.github.io/langgraphjs/concepts/low_level/). Also check out [Building ToolLLM With LangGraph.js](https://www.youtube.com/watch?v=xbZzJjBm6t4&t=742s) for a more production-grade example!
+The best resource to understand LangGraph.js better is the [official documentation](https://langchain-ai.github.io/langgraphjs/concepts/low_level/). Also check out [Building ToolLLM With LangGraph.js](https://www.youtube.com/watch?v=xbZzJjBm6t4&t=742s) for a more production-grade example!
