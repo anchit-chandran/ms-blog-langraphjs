@@ -73,9 +73,15 @@ The [official documentation](https://langchain-ai.github.io/langgraphjs/concepts
 
 We'll work towards creating a workflow which, based on the user's input, will reply with an excellent programming joke or a helpful random fact.
 
+![Joke or Fact LangGraph](assets/jokeorfact.png)
+
 But first, let's build the most basic Graph possible.
 
 ## Hello World Graph
+
+We'll start by building a graph that just logs "Hello world!" and "Bye world!", with no inputs.
+
+![Bare Bones Hello World Graph](assets/hellowordbarebones.png)
 
 For tidiness, let's put the graph code in a different file.
 
@@ -221,6 +227,8 @@ Graph result:  undefined
 ## Hello World Graph with State
 
 We've built a simple graph, but it could be more fun if we added some states.
+
+![Hello World Graph with State](assets/helloworldstate.png)
 
 Go back to `src/helloWorld.ts`.
 
@@ -414,6 +422,8 @@ Graph result:  { name: 'Bill Nye', isHuman: false }
 
 ## Adding a Conditional Edge
 
+![Adding a Conditional Edge](assets/addconditional.png)
+
 Go back to `hellWorldGraph.ts`.
 
 We can add conditional edges to our Graph. This allows us to choose which node to execute next based on the current State.
@@ -532,6 +542,8 @@ We've now built a simple graph with conditional routing! We can now create a sli
 ## Building a Random Fact or Joke Graph
 
 We'll build a graph that returns a random fact or joke based on the user's input.
+
+![Joke or Fact LangGraph](assets/jokeorfact.png)
 
 This will mock LLM calls to decipher whether the user has requested a joke or fact, then hit external APIs to get and return the data.
 
