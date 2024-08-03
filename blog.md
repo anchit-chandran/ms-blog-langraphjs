@@ -57,9 +57,9 @@ Open `src/index.ts`.
 
 ### What is a Graph?
 
-In the context of LangGraph.js, a graph is a collection of nodes and edges.
+A graph is a collection of nodes and edges.
 
-There are 3 key concepts:
+There are 3 key concepts in LangGraph.js:
 
 - **Nodes**: JavaScript/TypeScript functions that encode logic.
 - **Edges**: JavaScript/TypeScript unctions that determine which `Node` to execute next based on the current `State`. These can be conditional branches or direct, fixed transitions.
@@ -67,13 +67,15 @@ There are 3 key concepts:
 
 More simply, nodes are functions that do work, edges are functions that choose what work to do, and the state tracks data throughout the workflow.
 
-Let's illustrate this using a simple example: based on the user's input, we'll reply with an excellent programming joke or useful random fact.
+The [official documentation](https://langchain-ai.github.io/langgraphjs/concepts/low_level/#graphs) is a great resource to learn more.
+
+We'll work towards creating a workflow which, based on the user's input, will reply with an excellent programming joke or useful random fact.
 
 But first, let's build the most basic graph possible.
 
 ## Hello World Graph
 
-First, import the necessary modules at the top of your file:
+Import the necessary modules at the top of your file:
 
 ```ts
 import { StateGraph, START, END, StateGraphArgs } from "@langchain/langgraph";
