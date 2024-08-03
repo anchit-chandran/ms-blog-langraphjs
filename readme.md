@@ -1,6 +1,6 @@
 # Getting Started with LangGraph.js
 
-Welcome to this comprehensive beginner's guide to LangGraph.js, a powerful library in the Langchain ecosystem. In it, we will explore the basics of building applications with LangGraph.js.
+Welcome to this complete beginner's guide to LangGraph.js, a powerful library in the Langchain ecosystem. In it, we will explore the basics of building applications with LangGraph.js.
 
 ## Who is this guide for?
 
