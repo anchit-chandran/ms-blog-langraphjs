@@ -4,7 +4,7 @@
   "description": "A Starter Repo For Learning Langraph.js",
   "main": "index.ts",
   "scripts": {
-    "start": "tsc && node index.js",
+    "start": "nodemon --exec 'tsc && node' index.js",
     "build": "tsc"
   },
   "author": "",
@@ -16,6 +16,7 @@
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/node": "^22.1.0",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "nodemon": "^3.0.0"
   }
 }
