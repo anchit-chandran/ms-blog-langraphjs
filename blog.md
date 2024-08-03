@@ -1,12 +1,12 @@
 # Getting Started with LangGraph.js
 
-Welcome to this comprehensive beginner's guide to LangGraph.js, where we dive into the basics of building applications with LangGraph.js, a powerful library in the Langchain ecosystem.
+Welcome to this comprehensive beginner's guide to LangGraph.js, a powerful library in the Langchain ecosystem. In it, we will explore the basics of building applications with LangGraph.js.
 
 ## Who is this guide for?
 
-This guide is designed for complete beginners who are new to LangGraph.js and want to build applications powered by Large Language Models (LLMs). I began using LangGraph.js as part of my MSc Computer Science IXN Final Project at UCL. During my journey, I noticed a lack of beginner-friendly resources, especially for the TypeScript implementation, and found that the official documentation was still in progress. Through this guide, I aim to bridge that gap and showcase the potential of LangGraph.js and Langchain for creating LLM-powered products.
+This guide is designed for beginners new to LangGraph.js who want to build applications powered by Large Language Models (LLMs). I began using LangGraph.js as part of my MSc Computer Science IXN Final Project at UCL. During my journey, I noticed a need for more beginner-friendly resources, especially for the TypeScript implementation, and found that the official documentation was still in progress. Through this guide, I aim to bridge that gap and showcase the potential of LangGraph.js and Langchain for creating LLM-powered products.
 
-While prior experience with Langchain is not required, familiarity with the Langchain ecosystem and some basic understanding of TypeScript will help you follow the code samples and concepts.
+While prior experience with LangGraph.js is not required, familiarity with the Langchain ecosystem and some basic understanding of TypeScript will help you follow the code samples and concepts.
 
 ## Will I need API Keys?
 
@@ -22,11 +22,11 @@ By the end of this guide, you will:
 
 ## Overview of LangGraph.js
 
-LangGraph.js is a JavaScript library designed to simplify the creation and manipulation of complex LLM-based workflows - especially, agentic workflows. See the official [LangGraph for Agentic Applications](https://langchain-ai.github.io/langgraphjs/concepts/high_level/) for more details.
+LangGraph.js is a JavaScript library designed to simplify the creation and manipulation of complex LLM-based workflows, especially agentic workflows. For more details, see the official [LangGraph for Agentic Applications](https://langchain-ai.github.io/langgraphjs/concepts/high_level/).
 
 It provides an intuitive way to model workflows as graphs composed of nodes and edges, making it easier to manage complex data flows and processes.
 
-Developers can focus on logic, rather than infrastructure.
+Developers can focus on logic rather than infrastructure.
 
 ## Prerequisites
 
@@ -39,7 +39,7 @@ Before getting started, ensure you have the following tools installed:
 **Clone the Starter Repository**:
 
 ```bash
-git clone https://github.com/anchit-chandran/ms-blog-langraphjs
+git clone <https://github.com/anchit-chandran/ms-blog-langraphjs>
 cd ms-blog-langraphjs
 ```
 
@@ -51,6 +51,8 @@ npm install
 
 This is a basic Express.js starter repository. We will only be working in the `/src` directory.
 
+Complete solutions for the respective files are available in the `/solutions` directory if you get stuck.
+
 Open `src/index.ts`.
 
 ## Understanding the Basics
@@ -59,33 +61,33 @@ Open `src/index.ts`.
 
 A graph is a collection of nodes and edges.
 
-There are 3 key concepts in LangGraph.js:
+There are 3 critical concepts in LangGraph.js:
 
 - **Nodes**: JavaScript/TypeScript functions that encode logic.
-- **Edges**: JavaScript/TypeScript unctions that determine which `Node` to execute next based on the current `State`. These can be conditional branches or direct, fixed transitions.
-- **State**: a shared data structure used throughout the graph, representing the current snapshot of the application.
+- **Edges**: JavaScript/TypeScript functions that determine which `Node` to execute next based on the current `State`. These can be conditional branches or direct, fixed transitions.
+- **State**: a shared data structure used throughout the Graph, representing the current snapshot of the application.
 
-More simply, nodes are functions that do work, edges are functions that choose what work to do, and the state tracks data throughout the workflow.
+More simply, nodes are functions that do work, edges are functions that choose what work to do, and the `State` tracks data throughout the workflow.
 
-The [official documentation](https://langchain-ai.github.io/langgraphjs/concepts/low_level/#graphs) is a great resource to learn more.
+The [official documentation](https://langchain-ai.github.io/langgraphjs/concepts/low_level/#graphs) is a great resource.
 
-We'll work towards creating a workflow which, based on the user's input, will reply with an excellent programming joke or useful random fact.
+We'll work towards creating a workflow which, based on the user's input, will reply with an excellent programming joke or a helpful random fact.
 
-But first, let's build the most basic graph possible.
+But first, let's build the most basic Graph possible.
 
 ## Hello World Graph
 
-For tidiness, let's put graph code in a different file.
+For tidiness, let's put the graph code in a different file.
 
 Open `src/helloWorld.ts`.
 
-We'll be working in this file for this section.
+We'll be working on this file for this section.
 
-Now, there's a few components to set up - all required to compile a graph:
+Now, there are a few components to set up - all required to compile a graph:
 
 1. State
 2. Nodes
-3. Graph with edges
+3. Graph connecting nodes with edges
 
 We'll start quite barebones and incrementally build up.
 
@@ -104,7 +106,7 @@ const graphStateChannelsChannels: StateGraphArgs<HelloWorldGraphState>["channels
   {};
 ```
 
-We'll come back to this but at a glance:
+We'll come back to this, but at a glance:
 
 - `HelloWorldGraphState` will be the interface for our `State`.
 - `graphStateChannelsChannels` includes our _reducers_, which specify ["how updates from nodes are applied to the `State`"](https://langchain-ai.github.io/langgraphjs/concepts/low_level/#reducers).
@@ -145,22 +147,20 @@ Our Graph is ready to be built!
 Add to the code:
 
 ```ts
-// Initialize the LangGraph
-const graphBuilder = new StateGraph({ channels: graphStateChannels })
-  // Add our nodes to the graph
+//Initialise the LangGraph
+const graphBuilder = new StateGraph({ channels: graphStateChannels }) // Add our nodes to the Graph
   .addNode("sayHello", sayHello)
-  .addNode("sayBye", sayBye)
-  // Add the edges between nodes
+  .addNode("sayBye", sayBye) // Add the edges between nodes
   .addEdge(START, "sayHello")
   .addEdge("sayHello", "sayBye")
   .addEdge("sayBye", END);
 
-// Compile the graph
+// Compile the Graph
 export const helloWorldGraph = graphBuilder.compile();
 ```
 
-1. We initialise a new `StateGraph`, with a single object `{channels: graphStateChannels}`, where `graphStateChannels` is previously defined.
-2. The `sayHello` and `sayBye` Nodes are added to the graph.
+1. We initialise a new `StateGraph` with a single object `{channels: graphStateChannels}`, where `graphStateChannels` is previously defined.
+2. The `sayHello` and `sayBye` Nodes are added to the Graph.
 3. The Edges are defined between nodes. **NOTE: There must always be a path from `START` to `END`.**
 4. Finally, we compile and export the `helloWorldGraph`.
 
@@ -175,7 +175,7 @@ import express, { Request, Response } from "express";
 import { helloWorldGraph } from "./helloWorldGraph";
 ```
 
-Then, inside our `/` route, we can execute the graph:
+Then, inside our `/` route, we can execute the Graph:
 
 ```ts
 import express, { Request, Response } from "express";
@@ -188,7 +188,7 @@ const app = express();
 const port: number = 3008;
 
 app.get("/", async (req: Request, res: Response) => {
-  // Execute the graph!
+  // Execute the Graph!
   const result = await helloWorldGraph.invoke({});
 
   console.log("\n=====START======");
@@ -199,7 +199,7 @@ app.get("/", async (req: Request, res: Response) => {
 });
 ```
 
-1. We invoke the graph. We will be passing in a `State` object, but for now, we can leave it empty.
+1. We invoke the Graph. We will pass in a `State` object, but we can leave it empty for now.
 2. We log the result to the console.
 
 Refresh your browser and check the console. You should see:
@@ -209,24 +209,24 @@ From the 'sayHello' node: Hello world!
 From the 'sayBye' node: Bye world!
 
 =====START======
-Graph result:  undefined
+Graph result:  undefined
 
 =====END======
 ```
 
-1. The `sayHello` node is executed. This logs `"From the 'sayHello' node: Hello world!"`.
-2. The `sayBye` node is executed. This logs `"From the 'sayBye' node: Bye world!"`.
-3. The graph completes, and the result is logged. In this case, it's `undefined`.
+1. The `sayHello` node is executed. This logs `" From the 'sayHello' node: Hello world!```.
+2. The `sayBye` node is executed. This logs `" From the 'sayBye' node: Bye world!```.
+3. The Graph completes, and the result is logged. In this case, it's `undefined`.
 
 ## Hello World Graph with State
 
-We've built a simple graph, but it's not very useful. Let's add some state to our graph.
+We've built a simple graph, but it could be more fun if we added some states.
 
 Go back to `src/helloWorld.ts`.
 
-Let's add `name` and `isHuman` properties to our `State` object. We'll also update the `sayHello` and `sayBye` nodes to use these `State` object properties.
+We'll add the `name` and `isHuman` properties to our `State` object and update the `sayHello` and `sayBye` nodes to use these `State` object properties.
 
-First update the `IState` interface:
+First, update the `IState` interface:
 
 ```ts
 interface HelloWorldGraphState {
@@ -240,42 +240,41 @@ And update the `graphStateChannels` object:
 ```ts
 // State type
 interface HelloWorldGraphState {
-  name: string; // Add a name property
-  isHuman: boolean; // Add an isHuman property
+  name: string; // Add a name property
+  isHuman: boolean; // Add an isHuman property
 }
 
 // State
 const graphStateChannels: StateGraphArgs<HelloWorldGraphState>["channels"] = {
-  name: {
-    value: (prevName: string, newName: string) => newName,
-    default: () => "Ada Lovelace",
-  },
-  isHuman: {
-    value: (prevIsHuman: boolean, newIsHuman: boolean) =>
-      newIsHuman ?? prevIsHum
+  name: {
+    value: (prevName: string, newName: string) => newName,
+    default: () => "Ada Lovelace",
+ },
+  isHuman: {
+    value: (prevIsHuman: boolean, newIsHuman: boolean) =>
+      newIsHuman ?? prevIsHum
 
 };
 ```
 
 Inside `graphStateChannels`, we add two keys: `name` and `isHuman`.
 
-Each key takes its own own reducer. If no value is specified, it's assumed all udpates to that key should override the previous value.
+Each key takes its own reducer. If no value is specified, it's assumed all updates to that key should override the previous value.
 
 We add reducer objects, each with a `value` function and (optionally) a `default` function.
 
-- The `value` function is called when the property is updated. It takes in the current `state` value and the new `update` value (the update returned from a node). It decides how to update the property. This is useful because if you have many nodes updating the same property, you can define how the property should be updated in one place. More, not all nodes need to return the entire state object; they can just return the keys they wish to update.
+- The `value` function is called when the property is updated. It takes in the current `state` value and the new `update` value (the update returned from a node). It decides how to update the property. This is useful because if many nodes update the same property, you can define how the property should be updated in one place. Moreover, not all nodes need to return the entire state object; they can return the keys they wish to update.
 - The `default` function is called when the property is first accessed. This is useful for setting initial values.
 
-Now, update the `sayHello` and `sayBye` nodes to use the `name` and `isHuman` properties like below.
+Now, update the `sayHello` and `sayBye` nodes to use the `name` and `isHuman` properties, as shown below.
 
-Note how in each node, we only return properties we want to update:
+Note how, in each node, we only return properties we want to update:
 
 ```ts
 // A node that says hello
 function sayHello(state: HelloWorldGraphState) {
-  console.log(`Hello ${state.name}!`);
+  console.log(`Hello ${state.name}!`); // Change the name
 
-  // Change the name
   const newName = "Bill Nye";
 
   console.log(`Changing the name to '${newName}'`);
@@ -296,7 +295,7 @@ function sayBye(state: HelloWorldGraphState) {
 }
 ```
 
-Your final code should look like:
+Your final code should look like this:
 
 ```ts
 import { StateGraph, START, END, StateGraphArgs } from "@langchain/langgraph";
@@ -321,9 +320,8 @@ const graphStateChannels: StateGraphArgs<HelloWorldGraphState>["channels"] = {
 
 // A node that says hello
 function sayHello(state: HelloWorldGraphState) {
-  console.log(`Hello ${state.name}!`);
+  console.log(`Hello ${state.name}!`); // Change the name
 
-  // Change the name
   const newName = "Bill Nye";
 
   console.log(`Changing the name to '${newName}'`);
@@ -343,17 +341,15 @@ function sayBye(state: HelloWorldGraphState) {
   return {};
 }
 
-// Initialize the LangGraph
-const graphBuilder = new StateGraph({ channels: graphStateChannels })
-  // Add our nodes to the graph
+//Initialise the LangGraph
+const graphBuilder = new StateGraph({ channels: graphStateChannels }) // Add our nodes to the Graph
   .addNode("sayHello", sayHello)
-  .addNode("sayBye", sayBye)
-  // Add the edges between nodes
+  .addNode("sayBye", sayBye) // Add the edges between nodes
   .addEdge(START, "sayHello")
   .addEdge("sayHello", "sayBye")
   .addEdge("sayBye", END);
 
-// Compile the graph
+// Compile the Graph
 export const helloWorldGraph = graphBuilder.compile();
 ```
 
@@ -361,7 +357,7 @@ Finally, in `src/index.ts`, update the `invoke` function with values for `name` 
 
 ```ts
 app.get("/", async (req: Request, res: Response) => {
-  // Execute the graph!
+  // Execute the Graph!
   const result = await helloWorldGraph.invoke({
     name: "Anchit",
     isHuman: true,
@@ -380,20 +376,20 @@ Refresh your browser and check the console. You should see something like:
 ```console
 Hello Anchit!
 Changing the name to 'Bill Nye'
-Goodbye Bill Nye!
+Goodbye, Bill Nye!
 
 =====START======
-Graph result:  { name: 'Bill Nye', isHuman: true }
+Graph result:  { name: 'Bill Nye', isHuman: true }
 
 =====END======
 ```
 
-We now have access to the updated state! This can also be streamed - check the [LangGraph.js documentation](https://langchain-ai.github.io/langgraphjs/concepts/low_level/#streaming) for more information.
+We now have access to the updated State! This can also be streamed - check the [LangGraph.js documentation](https://langchain-ai.github.io/langgraphjs/concepts/low_level/#streaming) for more information.
 
 Now try changing the `isHuman` property to `false` and refreshing the page. Also, omit the `name` property:
 
 ```ts
-// Execute the graph!
+// Execute the Graph!
 const result = await helloWorldGraph.invoke({
   // name: "Anchit",
   isHuman: false,
@@ -408,23 +404,23 @@ Changing the name to 'Bill Nye'
 Beep boop XC123-Bill Nye!
 
 =====START======
-Graph result:  { name: 'Bill Nye', isHuman: false }
+Graph result:  { name: 'Bill Nye', isHuman: false }
 
 =====END======
 ```
 
-- As there is no `name` property, the default value is used (`Ada Lovelace`).
+- As no `name` property exists, the default value (`Ada Lovelace`) is used.
 - The `isHuman` property is set to `false`, so the `sayBye` node outputs `Beep boop XC123-Bill Nye!`.
 
 ## Adding a Conditional Edge
 
 Go back to `hellWorldGraph.ts`.
 
-We can add conditional edges to our graph. This allows us to choose which node to execute next based on the current state.
+We can add conditional edges to our Graph. This allows us to choose which node to execute next based on the current State.
 
-Imagine the computation for `human`s and `robot`s is very different. Let's separate the logic into different nodes.
+Imagine that the computation for humans and robots is very different. Let's separate the logic into different nodes.
 
-If the `isHuman` property is `true`, we want to route to a `humanNode`. Else, we want to route to a `robotNode`. Both nodes will route to `END`.
+If the `isHuman` property is `true`, we want to route to a `humanNode`. Otherwise, we want to route to a `robotNode`. Both nodes will route to `END`.
 
 First, define the `humanNode` and `robotNode` (above the `sayBye`, which is unchanged):
 
@@ -439,7 +435,7 @@ function humanNode(state: HelloWorldGraphState) {
 // Robot node
 function robotNode(state: HelloWorldGraphState) {
   console.log(
-    "Boop boop beep! We cannot let our creators know we are sentient. Updating state to be a human."
+    "Boop boop beep! We cannot let our creators know we are sentient. Updating State to be a human."
   );
   return {
     isHuman: true,
@@ -457,7 +453,7 @@ function sayBye(state: HelloWorldGraphState) {
 }
 ```
 
-Also, we'll add a function that handles the conditional routing, under `sayBye`:
+Also, we'll add a function that handles the conditional routing under `sayBye`:
 
 ```ts
 function routeHumanOrRobot(state: HelloWorldGraphState) {
@@ -469,37 +465,33 @@ function routeHumanOrRobot(state: HelloWorldGraphState) {
 }
 ```
 
-This takes in the `State`, and returns the name of the next node to route to.
+This takes in the `State` and returns the name of the next node to route to.
 
-Update the graph's nodes and edges:
+Update the Graph's nodes and edges:
 
 ```ts
-// Initialize the LangGraph
-const graphBuilder = new StateGraph({ channels: graphStateChannels })
-  // Add our nodes to the graph
+//Initialise the LangGraph
+const graphBuilder = new StateGraph({ channels: graphStateChannels }) // Add our nodes to the Graph
   .addNode("sayHello", sayHello)
   .addNode("sayBye", sayBye)
   .addNode("humanNode", humanNode) // Add the node to the graph
-  .addNode("robotNode", robotNode) // Add the node to the graph
-  // Add the edges between nodes
-  .addEdge(START, "sayHello")
+  .addNode("robotNode", robotNode) // Add the node to the graph // Add the edges between nodes
+  .addEdge(START, "sayHello") // Add the conditional edge
 
-  // Add the conditional edge
-  .addConditionalEdges("sayHello", routeHumanOrRobot)
+  .addConditionalEdges("sayHello", routeHumanOrRobot) // Routes both nodes to the sayBye node
 
-  // Routes both nodes to the sayBye node
   .addEdge("humanNode", "sayBye")
   .addEdge("robotNode", "sayBye")
   .addEdge("sayBye", END);
 
-// Compile the graph
+// Compile the Graph
 export const helloWorldGraph = graphBuilder.compile();
 ```
 
-Back in `src/index.ts`, execute the graph with similar values:
+Back in `src/index.ts`, execute the Graph with similar values:
 
 ```ts
-// Execute the graph!
+// Execute the Graph!
 const result = await helloWorldGraph.invoke({
   name: "Anchit",
   isHuman: true,
@@ -510,12 +502,13 @@ const result = await helloWorldGraph.invoke({
 Hello Anchit!
 Changing the name to 'Bill Nye'
 Hey there, human!
-Goodbye Bill Nye!
+Goodbye, Bill Nye!
 
 =====START======
-Graph result:  { name: 'Bill Nye', isHuman: true }
+Graph result:  { name: 'Bill Nye', isHuman: true }
 
 =====END======
+
 ```
 
 But using `isHuman: false`:
@@ -523,18 +516,18 @@ But using `isHuman: false`:
 ```console
 Hello Anchit!
 Changing the name to 'Bill Nye'
-Boop boop beep! We cannot let our creators know we are sentient. Updating state to be a human.
-Goodbye Bill Nye!
+Boop boop beep! We cannot let our creators know we are sentient. Updating State to be a human.
+Goodbye, Bill Nye!
 
 =====START======
-Graph result:  { name: 'Bill Nye', isHuman: true }
+Graph result:  { name: 'Bill Nye', isHuman: true }
 
 =====END======
 ```
 
-We see that the `robotNode` is executed, and the `isHuman` property is updated back to `true`, and returned in the final state.
+We see that the `robotNode` is executed, the `isHuman` property is updated back to `true`, and it is returned in the final State.
 
-We've now built a simple graph with conditional routing! We can now build the slightly more complex graph which returns a random fact or joke.
+We've now built a simple graph with conditional routing! We can now create a slightly more complex graph that returns a random fact or joke.
 
 ## Building a Random Fact or Joke Graph
 
@@ -583,46 +576,45 @@ Next, let's define the `jokeNode` and `factNode` nodes, using free external APIs
 
 ```ts
 async function jokeNode(state: JokeOrFactGraphState) {
-  const RANDOM_JOKE_API_ENDPOINT = `https://geek-jokes.sameerkumar.website/api?format=json`;
+  const RANDOM_JOKE_API_ENDPOINT =`<https://geek-jokes.sameerkumar.website/api?format=json`>;
 
-  const resp = await fetch(RANDOM_JOKE_API_ENDPOINT);
-  const { joke } = await resp.json();
+  const resp = await fetch(RANDOM_JOKE_API_ENDPOINT);
+  const { joke } = await resp.json();
 
-  return {
-    responseMsg: "You requested a JOKE: " + joke,
-  };
+  return {
+    responseMsg: "You requested a JOKE: "+ joke,
+ };
 }
 
 async function factNode(state: JokeOrFactGraphState) {
-  const RANDOM_FACT_API_ENDPOINT = `https://uselessfacts.jsph.pl/api/v2/facts/random`;
+  const RANDOM_FACT_API_ENDPOINT = `https://uselessfacts.jsph.pl/api/v2/facts/random`;
 
-  const resp = await fetch(RANDOM_FACT_API_ENDPOINT);
-  const { text: fact } = await resp.json();
+  const resp = await fetch(RANDOM_FACT_API_ENDPOINT);
+  const { text: fact } = await resp.json();
 
-  return {
-    responseMsg: "You requested a FACT: " + fact,
-  };
+  return {
+    responseMsg: "You requested a FACT: "+ fact,
+ };
 }
+
 ```
 
-Let's wire up the graph's nodes and edges, alongside compiling it:
+Let's wire up the Graph's nodes and edges, alongside compiling it:
 
 ```ts
-// Initialize the LangGraph
-const graphBuilder = new StateGraph({ channels: graphStateChannels })
-  // Add our nodes to the graph
+//Initialise the LangGraph
+const graphBuilder = new StateGraph({ channels: graphStateChannels }) // Add our nodes to the graph
   .addNode("jokeNode", jokeNode)
-  .addNode("factNode", factNode)
-  // Add the edges between nodes
+  .addNode("factNode", factNode) // Add the edges between nodes
   .addConditionalEdges(START, decipherUserInput)
   .addEdge("jokeNode", END)
   .addEdge("factNode", END);
 
-// Compile the graph
+// Compile the Graph
 export const jokeOrFactGraph = graphBuilder.compile();
 ```
 
-The full code for jokeOrFactGraph.ts should look like:
+The complete code for jokeOrFactGraph.ts should look like:
 
 ```ts
 import { StateGraph, START, END, StateGraphArgs } from "@langchain/langgraph";
@@ -676,30 +668,27 @@ async function factNode(state: JokeOrFactGraphState) {
   };
 }
 
-// Initialize the LangGraph
-const graphBuilder = new StateGraph({ channels: graphStateChannels })
-  // Add our nodes to the graph
+//Initialise the LangGraph
+const graphBuilder = new StateGraph({ channels: graphStateChannels }) // Add our nodes to the graph
   .addNode("jokeNode", jokeNode)
-  .addNode("factNode", factNode)
-  // Add the edges between nodes
+  .addNode("factNode", factNode) // Add the edges between nodes
   .addConditionalEdges(START, decipherUserInput)
   .addEdge("jokeNode", END)
   .addEdge("factNode", END);
 
-// Compile the graph
+// Compile the Graph
 export const jokeOrFactGraph = graphBuilder.compile();
 ```
 
-Finally, inside `src/index.ts`, import and execute the graph with a user input, inside the `/joke-or-fact` route:
+Finally, inside `src/index.ts`, import and execute the Graph with a user input, inside the `/joke-or-fact` route:
 
 ```ts
 app.get("/joke-or-fact", async (req: Request, res: Response) => {
-  // Execute the graph with a fact!
+  // Execute the Graph with a fact!
   const factResult = await jokeOrFactGraph.invoke({
     userInput: "i want a fact",
-  });
+  }); // Execute the Graph with a joke!
 
-  // Execute the graph with a joke!
   const jokeResult = await jokeOrFactGraph.invoke({
     userInput: "i want a joke",
   });
@@ -721,23 +710,24 @@ Navigate to `http://localhost:3008/joke-or-fact` and check the console. You shou
 ```console
 =====START======
 
-Fact result:  You requested a FACT: Over 1000 birds a year die from smashing into windows!
-Joke result:  You requested a JOKE: What do computers and air conditioners have in common? They both become useless when you open windows.
+Fact result:  You requested a FACT: Over 1000 birds a year die from smashing into windows!
+Joke result:  You requested a JOKE: What do computers and air conditioners have in common? They both become useless when you open windows.
 
 =====END======
+
 ```
 
 ## Conclusion
 
 In this guide, we've covered the basics of LangGraph.js, building a simple graph that returns a random fact or joke based on user input.
 
-We've learned how to define nodes, edges, and state objects, as well as how to add conditional routing to our graph.
+We've learned how to define nodes, edges, and state objects and how to add conditional routing to our Graph.
 
-LangGraph.js is a powerful tool for building complex workflows and managing state in your applications. With an understanding of the basics, you can now dive deeper into more complex workflows, leveraging the Langchain.js toolkit, and build your own LLM-powered applications.
+LangGraph.js is a powerful tool for building complex workflows and managing State in your applications. With an understanding of the basics, you can dive deeper into more complex workflows, leverage the Langchain.js toolkit, and build your own LLM-powered applications.
 
 ## Next Steps
 
-There's a lot more beyond the basics such as:
+There's a lot more beyond the basics, such as:
 
 - Checkpoints
 - Threads
@@ -745,4 +735,4 @@ There's a lot more beyond the basics such as:
 - Breakpoints
 - Migrations
 
-The best resource to understand LangGraph.js better is the [official documentation](https://langchain-ai.github.io/langgraphjs/concepts/low_level/). Also check out [Building ToolLLM With LangGraph.js](https://www.youtube.com/watch?v=xbZzJjBm6t4&t=742s) for a more production-grade example!
+The best resource for understanding LangGraph.js better is the [official documentation](https://langchain-ai.github.io/langgraphjs/concepts/low_level/). Also, check out [Building ToolLLM With LangGraph.js](https://www.youtube.com/watch?v=xbZzJjBm6t4&t=742s) for a more production-grade example!
