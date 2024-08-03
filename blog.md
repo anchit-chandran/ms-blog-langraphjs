@@ -75,10 +75,15 @@ But first, let's build the most basic graph possible.
 
 ## Hello World Graph
 
+For tidiness, let's put graph code in a different file.
+
+Open `src/helloWorld.ts`.
+
+We'll be working in this file for this section.
+
 Import the necessary modules at the top of your file:
 
 ```ts
-import express, { Request, Response } from "express";
 import { StateGraph, START, END, StateGraphArgs } from "@langchain/langgraph";
 ```
 
@@ -89,12 +94,6 @@ Now, there's a few components to set up - all required to compile a graph:
 3. Graph with edges
 
 We'll start quite barebones and incrementally build up.
-
-## Creating a new Graph file
-
-For tidiness, let's create a new file to put LangGraph.js code. We'll import the compiled graph and use it within `index.ts`.
-
-Create a file in the `src/` folder called `helloWorld.ts`.
 
 ### State
 
