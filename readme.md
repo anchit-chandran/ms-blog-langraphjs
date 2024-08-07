@@ -4,9 +4,9 @@ Welcome to this complete beginner's guide to LangGraph.js, a powerful library in
 
 ## Who is this guide for?
 
-This guide is designed for beginners new to LangGraph.js who want to build applications powered by Large Language Models (LLMs). I began using LangGraph.js as part of my Microsoft MSc Computer Science IXN Final Project at UCL. During my journey, I noticed a need for more beginner-friendly resources, especially for the TypeScript implementation, and found that the official documentation was still in progress. Through this guide, I aim to bridge that gap and showcase the potential of LangGraph.js and Langchain for creating LLM-powered products.
+This guide is designed for absolute beginners new to LangGraph.js who want to build applications powered by Large Language Models (LLMs). I began using LangGraph.js as part of my Microsoft MSc Computer Science IXN Final Project at UCL. During my journey, I noticed a need for more beginner-friendly resources, especially for the TypeScript implementation, and found that the official documentation was still in progress. Through this guide, I aim to bridge that gap and showcase the potential of LangGraph.js and Langchain for creating LLM-powered products.
 
-While prior experience with LangGraph.js is not required, familiarity with the Langchain ecosystem and some basic understanding of TypeScript will help you follow the code samples and concepts.
+While prior experience with LangGraph.js is not required, familiarity with the Langchain ecosystem and building with LLMs will be useful. A basic understanding of TypeScript will help you follow the code samples and concepts.
 
 ## Will I need API Keys?
 
@@ -22,11 +22,17 @@ By the end of this guide, you will:
 
 ## Overview of LangGraph.js
 
-LangGraph.js is a JavaScript library designed to simplify the creation and manipulation of complex LLM-based workflows, especially agentic workflows. For more details, see the official [LangGraph for Agentic Applications](https://langchain-ai.github.io/langgraphjs/concepts/high_level/).
+LangGraph.js is a JavaScript library designed to simplify the creation and manipulation of complex LLM-based workflows. It particularly shines when creating agentic workflows - systems which use an LLM to decide the course of action based on the current state. It provides an intuitive way to model workflows as graphs composed of nodes and edges, making it easier to manage complex data flows and processes.
 
-It provides an intuitive way to model workflows as graphs composed of nodes and edges, making it easier to manage complex data flows and processes.
+LangGraph state three core principles which make it the best framework for this:
 
-Developers can focus on logic rather than infrastructure.
+1. **Controllability**: being low level, LangGraph gives high control over the workflow - invaluable for getting reliable outputs from non-deterministic models.
+2. **Human-in-the-Loop**: with a built-in persistence layer, LangGraph is designed for 'human-in-the-loop' workflows as a first-class concept.
+3. **Streaming First**: agentic applications can take a long time to run, so first-class streaming support enables real-time updates, giving a better user experience.
+
+Ultimately, developers can focus on logic rather than infrastructure.
+
+For more details, see the official [LangGraph for Agentic Applications](https://langchain-ai.github.io/langgraphjs/concepts/high_level/).
 
 ## Prerequisites
 
@@ -61,6 +67,8 @@ Open `src/index.ts`.
 
 A graph is a collection of nodes and edges.
 
+In this tutorial, we cover the main graph class: **`StateGraph`**. This contains a user-defined `State` object, passed using the `channels` argument.
+
 There are 3 critical concepts in LangGraph.js:
 
 - **Nodes**: JavaScript/TypeScript functions that encode logic.
@@ -82,6 +90,12 @@ But first, let's build the most basic Graph possible.
 We'll start by building a graph that just logs "Hello world!" and "Bye world!", with no inputs.
 
 ![Bare Bones Hello World Graph](assets/hellowordbarebones.png)
+
+The general pattern for building a graph is:
+
+1. Define the `State` object.
+2. Define and add the `Nodes` and `Edges`.
+3. Compile the Graph - this step provides basic checks (e.g. ensuring no orphaned nodes) and where runtime arguments can be passed.
 
 For tidiness, let's put the graph code in a different file.
 
@@ -181,7 +195,7 @@ import express, { Request, Response } from "express";
 import { helloWorldGraph } from "./helloWorldGraph";
 ```
 
-Then, inside our `/` route, we can execute the Graph:
+Then, inside our GET `/` route, we can execute the Graph:
 
 ```ts
 import express, { Request, Response } from "express";
@@ -205,7 +219,7 @@ app.get("/", async (req: Request, res: Response) => {
 });
 ```
 
-1. We invoke the Graph. We will pass in a `State` object, but we can leave it empty for now.
+1. We invoke the Graph. We will later pass in a `State` object, but we can leave it empty for now.
 2. We log the result to the console.
 
 Refresh your browser and check the console. You should see:
@@ -267,7 +281,7 @@ const graphStateChannels: StateGraphArgs<HelloWorldGraphState>["channels"] = {
 
 Inside `graphStateChannels`, we add two keys: `name` and `isHuman`.
 
-Each key takes its own reducer. If no value is specified, it's assumed all updates to that key should override the previous value.
+Each key takes its own **reducer** function. If no function is specified, it's assumed all updates to that key should override the previous value.
 
 We add reducer objects, each with a `value` function and (optionally) a `default` function.
 
